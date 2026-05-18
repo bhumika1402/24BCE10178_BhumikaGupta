@@ -1,0 +1,91 @@
+show databases;
+use vitcampus;
+show tables from vitcampus;
+select * from cse;
+desc cse;
+ALTER TABLE CSE ADD(
+sdepartment varchar(50)
+);
+ALTER TABLE cse ADD(
+    sphn int8, sphn2 int8
+);
+insert into cse values (106,"Semi",95,'CSE','SriLanka');
+
+ALTER TABLE cse DROP COLUMN sphn;
+ALTER TABLE cse DROP COLUMN sphn2;
+ALTER TABLE cse ADD(
+    sCountry varchar(30) DEFAULT 'INDIA'
+);
+
+ALTER TABLE cse RENAME column 
+    Scountry TO SLocation;
+
+delete from eee;
+select * from eee;
+RENAME TABLE eee to ECE;
+show tables from vitcampus;
+
+
+use vitcampus;
+CREATE TABLE Worker (
+	WORKER_ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	FIRST_NAME CHAR(25),
+	LAST_NAME CHAR(25),
+	SALARY int2,
+	JOINING_DATE DATETIME,
+	DEPARTMENT CHAR(25)
+);
+
+INSERT INTO Worker 
+	(WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT) VALUES
+		(001, 'Monika', 'Arora', 100000, '14-02-20 09.00.00', 'HR'),
+		(002, 'Niharika', 'Verma', 80000, '14-06-11 09.00.00', 'Admin'),
+		(003, 'Vishal', 'Singhal', 300000, '14-02-20 09.00.00', 'HR'),
+		(004, 'Amitabh', 'Singh', 500000, '14-02-20 09.00.00', 'Admin'),
+		(005, 'Vivek', 'Bhati', 500000, '14-06-11 09.00.00', 'Admin'),
+		(006, 'Vipul', 'Diwan', 200000, '14-06-11 09.00.00', 'Account'),
+		(007, 'Satish', 'Kumar', 75000, '14-01-20 09.00.00', 'Account'),
+		(008, 'Geetika', 'Chauhan', 90000, '14-04-11 09.00.00', 'Admin');
+        
+select * from worker;
+
+UPDATE worker SET First_name='Jayanth',Last_name='V' WHERE worker_id=1;
+UPDATE worker SET salary = salary+5000; 
+DELETE FROM worker WHERE worker_id=8;
+
+start transaction;
+create table emp (id int);
+insert into emp values(101);
+savepoint time15;
+insert into emp values(102);
+savepoint time16;
+insert into emp values(103);
+savepoint time17;
+insert into emp values(104);
+savepoint time18;
+
+rollback to time17;
+select* from emp;
+
+
+CREATE TABLE class(
+id INT2,
+name VARCHAR(50)
+);
+INSERT INTO class (ID,NAME) VALUES
+(1,'Harsh'),(2,'Soni'),(3,'Palak'),(4,'Suhani'),(5,'Nishtha');
+
+START TRANSACTION;
+UPDATE class SET name = 'Abhijit' WHERE id = '5';
+SAVEPOINT A;
+INSERT INTO class VALUES(6, 'Bhumi');
+SAVEPOINT B;
+INSERT INTO class VALUES(7, 'Atiksh');
+SAVEPOINT C;
+SELECT * FROM class;
+
+SELECT * FROM class WHERE id > 3;
+SELECT * FROM class WHERE id > 2 AND id < 6;
+SELECT * FROM class WHERE name = 'Palak' OR name = 'Bhumi';
+SELECT id, id + 10 AS new_id FROM class;
+
