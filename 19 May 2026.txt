@@ -1,0 +1,68 @@
+use vitcampus;
+show tables from vitcampus;
+
+select * from worker;
+
+select first_name,department,salary from worker 
+where department='admin' or salary >=100000;
+
+select worker_id,first_name,department,salary from worker 
+where worker_id=1 or worker_id=7;
+select worker_id, first_name, department, salary from worker
+where worker_id not in (1,6,7);
+
+select * from worker 
+where salary between 105000 and 300000; /*it takes the starting and the ending value also*/
+
+select * from worker 
+where salary between 100000 and 300000
+and department not in ('admin');
+
+select * from worker
+where salary between 80000 and 200000
+and department in ('hr', 'account');
+
+select * from worker where first_name like '__i%';
+select * from worker where first_name like 'V%k';
+select * from worker where first_name like '_i__%';
+
+select worker_id,department from worker where department like '__c%';
+select * from worker where last_name like '%a';
+select first_name,joining_date from worker where first_name like '%a%';
+
+
+/*5 special aggregate functions (cannot be used with varchar)*/
+select min(salary) from worker where department='hr';
+select max(salary) from worker where department='hr';
+select count(worker_id) from worker where department='hr';
+select sum(salary) from worker where department='admin';
+select avg(salary) from worker where department='admin'; 
+ 
+select min(salary) from worker where department = 'admin' and first_name not like 'a%';
+
+
+select salary from worker 
+union 
+select salary from worker;
+
+select salary from worker 
+union all
+select salary from worker;
+
+select worker_id as rollNumber from worker; /*alias = temporary name*/
+select distinct(department) from worker;
+
+select worker_id, first_name,
+case
+when salary > 300000 then 'Rich'
+when salary > 100000 and salary < 299999 then 'Middle'
+else 'poor'
+end 
+as status
+from worker;
+
+create view minSalaryAdmin as select min(salary) from worker;
+create view maxSalaryAdmin as select max(salary) from worker;
+
+select * from minSalaryAdmin;
+select * from maxSalaryAdmin;
