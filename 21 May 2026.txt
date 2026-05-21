@@ -1,0 +1,81 @@
+use vitcampus;
+create table products(
+pid int primary key,
+pname varchar(100) not null,
+prefNo int not null unique
+);
+desc products;
+
+insert into products values (101,"electronics",18750);
+insert into products values (102,"furniture",19930);
+select * from products;
+
+create table category(
+cid int primary key,
+cname varchar(100) not null
+);
+
+insert into category values (101,'electronics'),(102,'Home App');
+drop table category;
+drop table products;
+
+create table products (
+    pid int primary key,
+    pname varchar(100) NOT NULL,
+    cid int, 
+    foreign key (cid) references category(cid) on delete cascade
+);
+
+drop table products;
+
+create table products (
+    pid int primary key,
+    pname varchar(100) NOT NULL,
+    cid int, 
+    foreign key (cid) references category(cid) on update cascade
+);
+
+insert into category values (111,'PC');
+desc products;
+
+delete from category where cid=101;
+
+insert into products values (501,'HP laptop',103);
+insert into products values (502,'Wooden cub',102);
+insert into products values (503,'Power Bank',101);
+insert into products values (504,'Power Bank Samsung',105);
+
+select * from worker;
+
+select count(worker_id) from worker where department = 'admin' or department ='hr';
+
+select department, count(department) from worker 
+group by department order by department asc ;
+
+select department, count(department) from worker 
+group by department having count(department) >=3 order by department asc ;
+
+select * from worker limit 2 offset 3;
+
+select department, sum(salary) from worker group by department having sum(salary) <= 300000;
+
+select worker_id, first_name, department from worker 
+where worker_id in (2,5);
+
+
+select department, avg(salary) AS avg_salary
+from worker group by department order by avg_salary asc limit 1;
+
+select * from worker
+where department = 'ADMIN'
+order by salary desc 
+limit 1 offset 1;
+
+select * from worker w1
+where salary = (
+select distinct salary
+from worker w2
+where w1.department = w2.department
+order by salary desc 
+limit 1 offset 1
+);
