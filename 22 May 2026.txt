@@ -1,0 +1,38 @@
+use vitcampus;
+
+create table department(
+did int primary key,
+dname varchar(25) not null unique
+);
+
+insert into department values
+(101,'CSE'),(102,'ECE'),(103,'Civil'),(106,'Aero'),(107,'Mech');
+
+select * from department order by did;
+drop table hod;
+create table HOD(
+Hid int primary key,
+hname varchar(20) not null unique
+);
+
+insert into HOD values
+(101,'Arun'),(102,'Bhumika'),(105,'Ruddransh'),(108,'Kartik');
+
+select * from HOD;
+
+select * from 
+department cross join HOD order by did asc;
+
+select * from department inner join HOD 
+where department.did = HOD.hid;
+
+select * from department natural join HOD ; /*cross join only but it will check the data type and column name(extra 2 metrics) also unlike just the cross multiplication*/
+
+select * from department left outer join HOD 
+on department.did = HOD.hid order by did asc;
+
+select * from department right outer join HOD 
+on department.did = HOD.hid order by did asc;
+
+select * from department full join HOD 
+on department.did = HOD.hid order by did asc;
