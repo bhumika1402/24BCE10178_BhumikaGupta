@@ -1,0 +1,144 @@
+1.
+[JOINS] List the name of each employee along with their job title and department name.
+
+select employees.name, jobs.job_title, departments.dept_name 
+from employees join jobs on employees.job_id = jobs.job_id 
+join departments on employees.dept_id = departments.dept_id;
+
+
+2.
+[SUBQUERY] Find all employees whose salary is higher than the average salary of the 'IT' department.
+
+select name,salary from employees 
+where salary > (select avg(salary) from employees 
+where dept_id = (select dept_id from departments where dept_name = 'it'));
+
+
+5.
+[SELF JOIN] Retrieve a list of employee names and their respective manager's names.
+
+select e1.name as Name_of_employee, e2.name as Respective_manager 
+from employees e1 join employees e2 on e1.manager_id = e2.emp_id;
+
+
+6.
+[ORDER BY] Find the top 3 highest-paid employees and list them in descending order.
+
+select name,salary from employees order by salary desc limit 3;
+
+
+7.
+[JOINS + WHERE] Find all Developers working in the 'San Francisco' location.
+
+select name from employees e 
+join jobs j on e.job_id = j.job_id 
+join departments d on e.dept_id = d.dept_id 
+where j.job_title='Developer' and d.location = 'San Francisco'
+
+
+9.
+[HAVING] List job titles where the maximum salary of an employee in that role is less than 100,000.
+
+select j.job_title from employees e 
+join jobs j on e.job_id = j.job_id
+group by j.job_title
+having max(e.salary) < 100000;
+
+
+10.
+[SUBQUERY] Find the names of employees who work in the same department as 'David'.
+
+select name from employees 
+where dept_id = (select dept_id from employees where name = 'David');
+
+
+11.
+[MULTI-TABLE JOIN] Show all department names even if they have no employees assigned to them.
+
+select d.dept_name, e.name from departments d
+left join employees e on d.dept_id = e.dept_id;
+
+
+13.
+[CORRELATED SUBQUERY] Find employees who earn more than the average salary of their own department.
+
+select e1.name, e1.salary from employees e1
+where e1.salary >(select avg(e2.salary) from employees e2
+where e1.dept_id = e2.dept_id);
+
+
+14.
+[JOINS] Find the job title and salary of the employee with ID 504.
+
+select e.emp_id, j.job_title, e.salary
+from employees e join jobs j 
+on e.job_id = j.job_id
+where e.emp_id = 504;
+
+
+16.
+[SUBQUERY] List departments that do not have any 'Analysts'.
+
+select dept_name from departments 
+where dept_id not in (select e.dept_id
+from employees e join jobs j
+on e.job_id = j.job_id
+where j.job_title = 'Analyst');
+
+
+17.
+[AGGREGATION] Find the difference between the highest and lowest salary in the company.
+
+select max(salary) - min(salary) as salary_difference from employees;
+
+
+18.
+[JOIN + ORDER BY] Display employee names and hire dates, sorted by department name (A-Z) and then by salary (High to Low).
+
+select e.name, e.hire_date, d.dept_name, e.salary
+from employees e join departments d
+on e.dept_id = d.dept_id
+order by d.dept_name asc, e.salary desc;
+
+
+19.
+[HAVING] Identify managers (by ID) who manage more than 2 people.
+
+select manager_id from employees
+where manager_id is not null
+group by manager_id
+having count(emp_id) > 2;
+
+
+21.
+[LEFT JOIN] List all job titles and the number of employees currently holding that job.
+
+select j.job_title, count(e.emp_id) as No_of_employees
+from jobs j left join employees e
+on j.job_id = e.job_id
+group by j.job_title;
+
+
+22.
+[JOIN + LIKE] Find employees in the 'Finance' department whose names contain the letter 'i'.
+
+select e.name from employees e 
+join departments d on e.dept_id = d.dept_id 
+where d.dept_name = 'Finance' and e.name like '%i%';
+
+
+23.
+[MATH + GROUP BY] Calculate the 10% bonus amount for each employee and show the total bonus per department.
+
+select d.dept_name, sum(e.salary * 0.10) as Total_Bonus
+from employees e join departments d
+on e.dept_id = d.dept_id 
+group by d.dept_name;
+
+
+25.
+[JOINS] Find all employees who report to 'Charlie'.
+
+select e1.name from employees e1
+join Employees e2 on e1.manager_id = e2.emp_id
+where e2.name = 'Charlie';
